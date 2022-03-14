@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Search Artist</ion-title>
+  </ion-toolbar>
+  <ion-toolbar
+    ><ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionChange)="searchArtist($event)"
+      debounce="500"
+      animated="true"
+      #searchbar
+    ></ion-searchbar
+  ></ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div
+    *ngIf="!searchTerm"
+    style="
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    "
+  >
+    <ion-label>
+      Type in Searchbar in order to search for the Artist...
+    </ion-label>
+  </div>
+  <ion-list *ngIf="searchTerm">
+    <ion-item
+      *ngFor="let artist of searchArtists | async"
+      (click)="selectArtist(artist)"
+    >
+      <ion-avatar>
+        <ion-img
+          [src]="artist.image[3] ? artist.image[3]['#text'] : artist.image[1]['#text']"
+        ></ion-img>
+      </ion-avatar>
+      &nbsp;<ion-label>{{artist.name}} </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll threshold="1%" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more atists..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

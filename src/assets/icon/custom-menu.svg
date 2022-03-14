@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" class="s-ion-icon">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: currentColor;
+      }
+    </style>
+  </defs>
+  <g transform="translate(-512 24)">
+    <rect class="cls-1" width="512" height="64" rx="30" transform="translate(491 10)"></rect>
+    <rect class="cls-1" width="384" height="64" rx="30" transform="translate(491 200)"></rect>
+    <rect class="cls-1" width="256" height="64" rx="30" transform="translate(491 400)"></rect>
+  </g>
+</svg>

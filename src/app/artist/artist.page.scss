@@ -1,0 +1,15 @@
+.footerInfo {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around;
+  flex-direction: column;
+}
+
+.tracksImages {
+  border-radius: 75px !important;
+  overflow: hidden;
+}
+
+.shadowCards {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

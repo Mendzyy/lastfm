@@ -1,0 +1,7 @@
+{
+  "name": "lastfm",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

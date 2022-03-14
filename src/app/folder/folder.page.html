@@ -1,0 +1,81 @@
+<ion-header [translucent]="true" #header>
+  <ion-toolbar #toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <ion-icon role="img" src="./assets/icon/custom-menu.svg"></ion-icon>
+      </ion-menu-button>
+    </ion-buttons>
+    <ion-title class="animate__animated animate__slideInRight"
+      >{{ page }}</ion-title
+    >
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionChange)="searchArtist($event)"
+      debounce="500"
+      animated="true"
+      #searchbar
+    ></ion-searchbar>
+    <ion-select
+      interface="popover"
+      class="selector"
+      *ngIf="!searchTerm"
+      [(ngModel)]="country"
+      placeholder="Country"
+      (ionChange)="getArtists(country)"
+    >
+      <ion-select-option value="germany">Germany</ion-select-option>
+      <ion-select-option value="spain">Spain</ion-select-option>
+      <ion-select-option value="italy">Italy</ion-select-option>
+    </ion-select>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content
+  (ionScroll)="scroll($event)"
+  [scrollEvents]="true"
+  [fullscreen]="true"
+  scrollEvents="true"
+  [appHideHeader]="toolbar"
+>
+  <div id="container">
+    <ion-list *ngIf="!searchTerm">
+      <ion-item
+        *ngFor="let artist of artists | async"
+        routerDirection="forward"
+        [routerLink]="'/artist/'+[artist.mbid]"
+      >
+        <ion-avatar>
+          <ion-img
+            [src]="artist.image[3] ? artist.image[3]['#text'] : artist.image[1]['#text']"
+          ></ion-img>
+        </ion-avatar>
+        &nbsp;<ion-label>{{artist.name}} </ion-label>
+        <ion-icon color="primary" name="chevron-forward" slot="end"></ion-icon>
+      </ion-item>
+    </ion-list>
+    <ion-list *ngIf="searchTerm">
+      <ion-item
+        *ngFor="let artist of searchArtists | async"
+        routerDirection="forward"
+        [routerLink]="'/artist/'+[artist.mbid]"
+      >
+        <ion-avatar>
+          <ion-img
+            [src]="artist.image[3] ? artist.image[3]['#text'] : artist.image[1]['#text']"
+          ></ion-img>
+        </ion-avatar>
+        &nbsp;<ion-label>{{artist.name}} </ion-label>
+        <ion-icon color="primary" name="chevron-forward" slot="end"></ion-icon>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll threshold="1%" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more atists..."
+      >
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+</ion-content>

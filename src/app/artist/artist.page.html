@@ -1,0 +1,193 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="folder/Artists"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center animate__animated animate__slideInRight"
+      >{{(artist | async)?.name}}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!--DETAIL CARD START-->
+  <ion-card>
+    <ion-img
+      src="{{(artist | async)?.image[4]['#text']}}"
+      class="animate__animated animate__fadeIn"
+    ></ion-img>
+    <ion-card-header class="animate__animated animate__slideInLeft">
+      <ion-card-title>{{(artist | async)?.name}}</ion-card-title>
+      <!-- Artist Name -->
+    </ion-card-header>
+    <ion-card-content class="animate__animated animate__slideInLeft">
+      <ion-text class="ion-text-wrap"
+        >{{(artist | async)?.bio['summary']}}</ion-text
+      >
+      <!-- Summary of the Artist -->
+      <hr />
+      <div>
+        <ion-label
+          *ngFor="let _tag of (artist | async)?.tags['tag'] as tags; let i = index"
+        >
+          <b>{{_tag.name | titlecase }}</b>{{i === tags.length -1 ? '' :
+          ',&nbsp;' }}
+        </ion-label>
+        <!-- Tags converted into String -->
+      </div>
+    </ion-card-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="animate__animated animate__slideInUp">
+              <ion-label class="footerInfo">
+                Listeners:
+                <b>{{(artist | async)?.stats['listeners']}}</b></ion-label
+              >
+            </ion-col>
+            <ion-col class="animate__animated animate__slideInUp"
+              ><ion-label class="footerInfo"
+                >Playcount:
+                <b>{{(artist | async)?.stats['playcount']}}</b></ion-label
+              ></ion-col
+            >
+            <ion-col class="animate__animated animate__slideInUp"
+              ><ion-button
+                expand="block"
+                color="secondary"
+                href="{{(artist | async)?.url}}"
+                target="_blank"
+                fill="clear"
+              >
+                <ion-icon
+                  src="./assets/icon/link.svg"
+                ></ion-icon> </ion-button></ion-col
+          ></ion-row>
+        </ion-grid>
+      </ion-toolbar>
+    </ion-footer> </ion-card
+  ><!--DETAIL CARD END-->
+  <br />
+  <!--TOP 5 TRACKS START-->
+  <ion-item lines="full" class="ion-text-center">
+    <ion-text style="width: 100%" color="secondary">Top 5 Tracks</ion-text>
+  </ion-item>
+  <ion-grid>
+    <!-- <ion-row *ngFor="let track of (topTracks | async )| slice:0:1"> -->
+    <div *ngFor="let track of (topTracks | async ); let i = index">
+      <!-- Iteration -->
+      <ion-row *ngIf="i === 0" class="animate__animated animate__fadeInLeft">
+        <!--  First Track -->
+        <ion-col size="2"></ion-col>
+        <ion-col size="8">
+          <ion-card class="shadowCards">
+            <ion-card-header>
+              <ion-card-subtitle> {{track.name}} </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-img
+                class="tracksImages"
+                src="{{track.image[3]['#text']}}"
+              ></ion-img>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="2"></ion-col>
+      </ion-row>
+      <ion-row
+        class="animate__animated animate__fadeInRight"
+        *ngIf="(i + 1 < (topTracks|async)?.length || i + 1 == (topTracks|async)?.length) && i !== 0 && i % 2 != 0"
+      >
+        <!--  Rest of the Tracks divided in 2 columns -->
+        <ion-col *ngIf="i % 2 != 0">
+          <ion-card class="shadowCards">
+            <ion-card-header>
+              <ion-card-subtitle>
+                {{(topTracks|async)?.[i]['name']}}
+              </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-img
+                class="tracksImages"
+                src="{{(topTracks|async)?.[i]['image'][3]['#text']}}"
+              ></ion-img>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col *ngIf="(i + 1) % 2 == 0">
+          <ion-card class="shadowCards">
+            <ion-card-header>
+              <ion-card-subtitle>
+                {{(topTracks|async)?.[i+1]['name']}}
+              </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-img
+                class="tracksImages"
+                src="{{(topTracks|async)?.[i+1]['image'][3]['#text']}}"
+              ></ion-img>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+  <!--TOP 5 TRACKS END-->
+  <br />
+  <!--TOP 5 ALBUMS START-->
+  <ion-item lines="full" class="ion-text-center">
+    <ion-text style="width: 100%" color="secondary">Top 5 Albums</ion-text>
+  </ion-item>
+  <ion-accordion-group>
+    <ion-accordion
+      *ngFor="let album of  (topAlbums | async)"
+      value="{{album.name}}"
+    >
+      <ion-item slot="header">
+        <ion-avatar slot="start">
+          <ion-img src="{{album.image[1]['#text']}}"></ion-img>
+        </ion-avatar>
+        <ion-label>{{album.name}}</ion-label>
+      </ion-item>
+      <ion-list slot="content"
+        ><ion-item lines="none">
+          <ion-label color="primary"
+            >Playcount: <b>{{album.playcount}}</b></ion-label
+          >
+        </ion-item>
+      </ion-list></ion-accordion
+    >
+  </ion-accordion-group>
+  <!--TOP 5 ALBUMS END-->
+
+  <!--Similar START-->
+  <ion-item lines="full" class="ion-text-center"
+    ><ion-text style="width: 100%" color="secondary">Similar Artists</ion-text>
+  </ion-item>
+  <ion-slides [options]="slideOpts">
+    <ion-slide *ngFor="let similiar of (artist | async)?.similar['artist']">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title> {{similiar.name}} </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-img [src]="similiar.image[4]['#text']"></ion-img>
+        </ion-card-content>
+        <ion-footer>
+          <ion-toolbar>
+            <ion-grid>
+              <ion-col></ion-col>
+              <ion-col>
+                <ion-button size="small" (click)="compare(similiar.name)">
+                  Compare!
+                </ion-button>
+              </ion-col>
+              <ion-col></ion-col>
+            </ion-grid>
+          </ion-toolbar>
+        </ion-footer>
+      </ion-card>
+    </ion-slide> </ion-slides
+  ><!--Similar END-->
+</ion-content>

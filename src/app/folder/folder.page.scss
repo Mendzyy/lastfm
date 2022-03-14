@@ -1,0 +1,32 @@
+ion-menu-button {
+  color: var(--ion-color-primary);
+}
+
+#container {
+  text-align: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.spin {
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+ion-spinner {
+  width: 28px;
+  height: 28px;
+  stroke: #444;
+  fill: #222;
+}
+.selector {
+  letter-spacing: 0.1px;
+  width: 100% !important;
+  max-width: 100% !important;
+  justify-content: center;
+  border: solid 2px #e8ebf0;
+  background-color: #ffffff;
+  text-align: center;
+}

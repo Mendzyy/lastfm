@@ -1,0 +1,135 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="animate__animated animate__slideInRight"
+      >Compare!</ion-title
+    >
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/folder/Artists"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div
+    *ngIf="missing_artist"
+    style="
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    "
+  >
+    <ion-card class="customCardStyle">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center"
+          >Artist Selection</ion-card-title
+        >
+        <ion-card-subtitle class="ion-text-center"
+          >Please select 2 artists to compare!</ion-card-subtitle
+        >
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-grid>
+          <ion-row class="ion-margin-bottom ion-margin-top">
+            <!-- Selection of First Artist -->
+            <ion-col>
+              <ion-button
+                expand="block"
+                shape="round"
+                color="primary"
+                (click)="chooseArtist('first_artist')"
+                >{{ first_artist ? first_artist : 'First Artist' }}</ion-button
+              >
+              <ion-note>{{first_artist ? 'First Artist' : ''}}</ion-note>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-margin-bottom">
+            <!-- Selection of Second Artist -->
+            <ion-col>
+              <ion-button
+                expand="block"
+                shape="round"
+                color="secondary"
+                (click)="chooseArtist('second_artist')"
+                >{{ second_artist ? second_artist : 'Second Artist'
+                }}</ion-button
+              >
+              <ion-note>{{second_artist ? 'Second Artist' : ''}}</ion-note>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <!-- Compare Button Visible, after both Artists are selected -->
+            <ion-col
+              size="12"
+              class="ion-text-center"
+              *ngIf="first_artist && second_artist"
+              ><ion-button
+                shape="round"
+                color="success"
+                (click)="compareWithSelections()"
+                >Compare</ion-button
+              ></ion-col
+            >
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <ion-grid *ngIf="!missing_artist">
+    <div *ngFor="let compare of (comparision|async); let i = index">
+      <ion-row>
+        <ion-col
+          size="2"
+          [class]="i == 0 ? '' : ' ion-text-center customCols animate__animated animate__slideInLeft'"
+        >
+          <!--Properties/Parameters on which Artists can be compared! -->
+          <ion-label *ngIf="compare.parameter != 'image'"
+            >{{compare.parameter === 'url' ? 'Link' : compare.parameter |
+            titlecase}}</ion-label
+          >
+        </ion-col>
+        <ion-col
+          size="5"
+          class="ion-text-center customCols animate__animated animate__slideInUp"
+        >
+          <!--Properties/Parameters of first Artist -->
+          <ion-img
+            *ngIf="compare.parameter == 'image'"
+            src="{{compare.first[0]['#text']}}"
+          ></ion-img>
+          <ion-label
+            *ngIf="compare.parameter != 'image' && compare.parameter != 'url'"
+            >{{compare.first}}</ion-label
+          ><ion-button
+            fill="clear"
+            *ngIf="compare.parameter == 'url'"
+            href="{{compare.first}}"
+            target="_blank"
+            ><ion-icon src="./assets/icon/link.svg"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col
+          size="5"
+          class="ion-text-center customCols animate__animated animate__slideInUp"
+        >
+          <!--Properties/Parameters of second Artist -->
+          <ion-img
+            *ngIf="compare.parameter == 'image'"
+            src="{{compare.second[0]['#text']}}"
+          ></ion-img>
+          <ion-label
+            *ngIf="compare.parameter != 'image' && compare.parameter != 'url'"
+            >{{compare.second}}</ion-label
+          >
+          <ion-button
+            fill="clear"
+            *ngIf="compare.parameter == 'url'"
+            href="{{compare.second}}"
+            target="_blank"
+            ><ion-icon src="./assets/icon/link.svg"></ion-icon> </ion-button
+        ></ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+</ion-content>
